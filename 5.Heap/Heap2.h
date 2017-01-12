@@ -39,7 +39,7 @@ public:
 		std::swap(_heap[0],_heap[_heap.size()-1]);
 		_heap.pop_back();
 		//_AdjustDown(_heap[0]);
-		_AdjustDown(0)
+		_AdjustDown(0);
 	}
 protected:
 	//向下调整
@@ -91,3 +91,4 @@ private:
 
 //总结:
 //这次没有什么大的问题,除了注释部分的小错误....
+//还少了个分号 /笑哭

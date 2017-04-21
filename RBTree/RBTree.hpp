@@ -4,6 +4,8 @@
 *日期:2017-04-21
 *集成开发环境:Microsoft Visual Studio 2010 
 */
+#include<cassert>
+#include<stack>
 #pragma once
 //颜色
 enum COLOR{
@@ -43,7 +45,7 @@ private:
 	RBTree& operator=(const RBTree&);
 public:
 	//插入、检查红黑树是否平衡
-	void Insert(const K&,const V&){
+	void Insert(const K &key,const V &value){
 		if(_root==NULL){
 			//当前树为空树
 			_root = new Node(key,value);
@@ -54,7 +56,7 @@ public:
 		Node *parent = NULL;
 		//找要插入的位置
 		while(cur!=NULL){
-			if(cur->_key > _key){
+			if(cur->_key > key){
 				parent = cur;
 				cur = cur->_left;
 			}else if(cur->_key < key){
@@ -135,7 +137,7 @@ public:
 	bool CheckIsBalance(){
 		Node *cur = _root;
 		int blackCount = 0;
-		int count = 0;
+		size_t count = 0;
 		while(cur!=NULL){
 			//计算最左路径黑色节点的数目
 			if(cur->_color==BLACK){
@@ -143,7 +145,25 @@ public:
 			}
 			cur = cur->_left;
 		}
-		_CheckIsBalance(_root,count,blankcount);
+		return _CheckIsBalance(_root,count,blackCount);
+	}
+	void InOrderNonR(){
+		std::stack<Node*> s;
+		Node *cur = _root;
+		while(!s.empty() || cur!=NULL){
+			
+			while(cur!=NULL){
+				s.push(cur);
+				cur = cur->_left;
+			}
+
+			Node *top = s.top();
+			std::cout<<top->_key<<" ";
+
+			cur = top->_right;
+		
+		}
+		std::cout<<std::endl;
 	}
 
 protected:
@@ -166,12 +186,12 @@ protected:
 		return _CheckIsBalance(root->_left,count,k)&&
 			_CheckIsBalance(root->_right,count,k);
 	}	//递归检查是否平衡
-	static void _Destroy(){
+	static void _Destroy(Node *root){
 		if(root==NULL){
 			return ;
 		}
-		Destroy(root->_left);
-		Destroy(root->_right);
+		_Destroy(root->_left);
+		_Destroy(root->_right);
 		delete root;		
 	}	//递归删除节点
 	void RotateL(Node* parent){

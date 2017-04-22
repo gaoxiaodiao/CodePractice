@@ -44,7 +44,7 @@ private:
 	RBTree(const RBTree&);
 	RBTree& operator=(const RBTree&);
 public:
-	//插入、检查红黑树是否平衡
+	//插入
 	void Insert(const K &key,const V &value){
 		if(_root==NULL){
 			//当前树为空树
@@ -75,6 +75,8 @@ public:
 			parent->_right = cur;
 		}
 		cur->_parent = parent;
+
+		//调整颜色
 		while(parent!=NULL && parent->_color == RED){
 			Node *grandfather = parent->_parent;
 			if(grandfather->_left == parent){
@@ -158,16 +160,16 @@ public:
 			}
 
 			Node *top = s.top();
+			s.pop();
 			std::cout<<top->_key<<" ";
 
 			cur = top->_right;
-		
 		}
 		std::cout<<std::endl;
 	}
 
 protected:
-	static bool _CheckIsBalance(Node*root,size_t &count,const size_t k){
+	static bool _CheckIsBalance(Node*root,size_t count,const size_t k){
 		if(root==NULL){
 			return true;
 		}
@@ -182,7 +184,6 @@ protected:
 			//某条路径黑色节点数目与最左路径黑色节点数目不同
 			return false;
 		}
-
 		return _CheckIsBalance(root->_left,count,k)&&
 			_CheckIsBalance(root->_right,count,k);
 	}	//递归检查是否平衡
@@ -205,44 +206,45 @@ protected:
 		
 		Node *pparent = parent->_parent;
 		if(pparent==NULL){
-			_root = subRL;
-			subRL->_parent = NULL;
+			_root = subR;
+			subR->_parent = NULL;
 		}else{
 			if(pparent->_left == parent){
-				pparent->_left = subRL;
+				pparent->_left = subR;
 			}else{
-				pparent->_right = subRL;
+				pparent->_right = subR;
 			}
-			subRL->_parent = pparent;
+			subR->_parent = pparent;
 		}
 
-		subRL->_right = parent;
-		parent->_parent = subRL;
+		subR->_left = parent;
+		parent->_parent = subR;
 	}//左旋
+
 	void RotateR(Node* parent){
 		Node *subL = parent->_left;
 		Node *subLR = subL->_right;
 
-		parent->_right = subLR;
+		parent->_left = subLR;
 		if(subLR!=NULL){
 			subLR->_parent = parent;
 		}
 
 		Node *pparent = parent->_parent;
-		if(pparent!=NULL){
-			_root = subLR;
+		if(pparent==NULL){
+			_root = subL;
 			_root->_parent = NULL;
 		}else{
 			if(pparent->_left == parent){
-				pparent->_left = subLR;
+				pparent->_left = subL;
 			}else{
-				pparent->_right = subLR;
+				pparent->_right = subL;
 			}
-			subLR->_parent = pparent;
+			subL->_parent = pparent;
 		}
 
-		subLR->_left = parent;
-		parent->_parent = subLR;
+		subL->_right = parent;
+		parent->_parent = subL;
 	}//右旋
 private:
 	Node *_root;

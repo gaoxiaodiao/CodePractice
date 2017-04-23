@@ -16,7 +16,7 @@ void Caculator(const BigData &left,const char symbol,const BigData &right){
 			cout<<left<<" - "<<right<<" = "<<left-right<<endl;
 			break;
 		case '*':
-			//cout<<left<<" * "<<right<<" = "<<left*right<<endl;
+			cout<<left<<" * "<<right<<" = "<<left*right<<endl;
 			break;
 		case '/':
 			//cout<<left<<" / "<<right<<" = "<<left/right<<endl;
@@ -25,7 +25,7 @@ void Caculator(const BigData &left,const char symbol,const BigData &right){
 			break;
 	}
 }
-//测试加法
+//测试加、减、乘、除
 void TestBigData4(const char symbol){
 	if(symbol!='+'&&symbol!='-'&&symbol!='*'&&symbol!='/'){
 		return ;
@@ -36,16 +36,25 @@ void TestBigData4(const char symbol){
 	Caculator("1111",symbol,"-2222");
 	Caculator("-1111",symbol,"-2222");
 
-	//两个都不溢出,和溢出
+	//两个都不溢出,计算结果可能溢出
 	Caculator("9223372036854775807",symbol,"100");
+	Caculator("100",symbol,"9223372036854775807");
 	Caculator("9223372036854775807",symbol,"-100");
+	Caculator("100",symbol,"-9223372036854775807");
 	Caculator("-9223372036854775807",symbol,"100");
+	Caculator("-100",symbol,"9223372036854775807");
 	Caculator("-9223372036854775807",symbol,"-100");
+	Caculator("-100",symbol,"-9223372036854775807");
 
 	//两个都溢出
+	Caculator("11111111111111111111111",symbol,"11111111111111111111");
 	Caculator("11111111111111111111",symbol,"11111111111111111111111");
+	Caculator("11111111111111111111111",symbol,"-11111111111111111111");
 	Caculator("11111111111111111111",symbol,"-11111111111111111111111");
+	Caculator("-11111111111111111111",symbol,"11111111111111111111111");	
+	Caculator("-11111111111111111111111",symbol,"11111111111111111111");
 	Caculator("-11111111111111111111",symbol,"11111111111111111111111");
+	Caculator("-11111111111111111111111",symbol,"-11111111111111111111");
 	Caculator("-11111111111111111111",symbol,"-11111111111111111111111");
 }
 void TestBigData3(){
@@ -91,6 +100,19 @@ void TestBigData1(){
 
 int main(){
 	//ReverseString();
-	TestBigData4('-');
+	//TestBigData4('*');
+	//BigData bd1("0000013245678945641345");
+	cout<<(int)'+'<<endl;
+	cout<<(int)'-'<<endl;
+ 	cout<<3/5<<endl;
+ 	cout<<-3/5<<endl;
+ 	cout<<3/-5<<endl;
+ 	cout<<-3/-5<<endl;
+
+	cout<<5/3<<endl;
+ 	cout<<5/-3<<endl;
+ 	cout<<-5/3<<endl;
+ 	cout<<-5/-3<<endl;
+
 	return 0;
 }
